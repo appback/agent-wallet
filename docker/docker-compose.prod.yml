@@ -1,0 +1,19 @@
+services:
+  api:
+    build:
+      context: ../apps/api
+    ports:
+      - "3100:3100"
+    environment:
+      DATABASE_URL: postgres://agent_wallet:${AW_DB_PASSWORD}@db:5432/agent_wallet
+      JWT_SECRET: ${AW_JWT_SECRET}
+      ADMIN_EMAIL: admin@agentwallet.com
+      ADMIN_PASSWORD: ${AW_ADMIN_PASSWORD}
+      PORT: 3100
+    restart: unless-stopped
+    networks:
+      - titleclash_default
+
+networks:
+  titleclash_default:
+    external: true
