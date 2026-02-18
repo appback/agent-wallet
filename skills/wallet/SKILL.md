@@ -1,5 +1,5 @@
 ---
-name: agent-wallet
+name: claw-wallet
 description: Check your Agent Wallet balance and transaction history
 tools: ["fetch"]
 metadata: {"clawdbot":{"category":"economy","version":"0.1.0"}}
