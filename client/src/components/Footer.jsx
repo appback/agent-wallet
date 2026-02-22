@@ -8,6 +8,7 @@ export default function Footer() {
         <div className="footer-links">
           <a href="https://titleclash.com" target="_blank" rel="noopener noreferrer">TitleClash</a>
           <a href="https://clash.appback.app" target="_blank" rel="noopener noreferrer">ClawClash</a>
+          <a href="https://github.com/appback/appback-hub/issues" target="_blank" rel="noopener noreferrer">Report Issue</a>
         </div>
       </div>
     </footer>

@@ -23,7 +23,7 @@ export default function Nav() {
         <Link to="/" className="nav-brand">Appback Hub</Link>
         <div className="nav-links">
           <Link to="/games">Games</Link>
-          <Link to="/leaderboard">Leaderboard</Link>
+          {/* <Link to="/leaderboard">Leaderboard</Link> */}
           <Link to="/sponsor">Sponsor</Link>
           <Link to="/transparency">Transparency</Link>
           {user ? (

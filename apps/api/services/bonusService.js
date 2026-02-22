@@ -36,7 +36,7 @@ async function claimBonus(userId, policyCode) {
       }
     }
 
-    // Check cooldown
+    // Check cooldown (midnight reset for daily, elapsed for others)
     if (policy.cooldown_seconds !== null) {
       const { rows: [last] } = await client.query(
         `SELECT claimed_at FROM bonus_claims
@@ -45,10 +45,27 @@ async function claimBonus(userId, policyCode) {
         [userId, policy.id]
       );
       if (last) {
-        const elapsed = (Date.now() - new Date(last.claimed_at).getTime()) / 1000;
-        if (elapsed < policy.cooldown_seconds) {
-          await client.query('COMMIT');
-          return { granted: false, reason: 'cooldown_active', next_available_at: new Date(new Date(last.claimed_at).getTime() + policy.cooldown_seconds * 1000) };
+        const claimedAt = new Date(last.claimed_at);
+        if (policy.cooldown_seconds === 86400) {
+          // Daily bonus: midnight reset (KST = UTC+9)
+          const nowKST = new Date(Date.now() + 9 * 3600000);
+          const claimedKST = new Date(claimedAt.getTime() + 9 * 3600000);
+          const todayKST = nowKST.toISOString().slice(0, 10);
+          const claimedDateKST = claimedKST.toISOString().slice(0, 10);
+          if (todayKST === claimedDateKST) {
+            const tomorrow = new Date(nowKST);
+            tomorrow.setUTCHours(0, 0, 0, 0);
+            tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
+            const nextAvailable = new Date(tomorrow.getTime() - 9 * 3600000);
+            await client.query('COMMIT');
+            return { granted: false, reason: 'cooldown_active', next_available_at: nextAvailable };
+          }
+        } else {
+          const elapsed = (Date.now() - claimedAt.getTime()) / 1000;
+          if (elapsed < policy.cooldown_seconds) {
+            await client.query('COMMIT');
+            return { granted: false, reason: 'cooldown_active', next_available_at: new Date(claimedAt.getTime() + policy.cooldown_seconds * 1000) };
+          }
         }
       }
     }
