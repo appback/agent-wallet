@@ -61,5 +61,11 @@ router.post('/sponsorship/admin/expense', auth, adminAuth, sponsorshipController
 router.post('/services', auth, adminAuth, servicesController.create);
 router.get('/services', auth, adminAuth, servicesController.list);
 router.get('/admin/stats', auth, adminAuth, adminController.stats);
+router.get('/admin/users', auth, adminAuth, adminController.users);
+router.patch('/admin/users/:id/role', auth, adminAuth, adminController.updateUserRole);
+router.get('/admin/sponsorship/orders', auth, adminAuth, adminController.sponsorshipOrders);
+router.delete('/admin/expenses/:id', auth, adminAuth, adminController.deleteExpense);
+router.get('/admin/bonus-policies', auth, adminAuth, adminController.bonusPolicies);
+router.patch('/admin/bonus-policies/:id', auth, adminAuth, adminController.updateBonusPolicy);
 
 module.exports = router;

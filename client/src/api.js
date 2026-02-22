@@ -16,6 +16,9 @@ export const authApi = {
   post(url, data) {
     return api.post(url, data, { headers: this._headers() })
   },
+  patch(url, data) {
+    return api.patch(url, data, { headers: this._headers() })
+  },
   delete(url) {
     return api.delete(url, { headers: this._headers() })
   }
