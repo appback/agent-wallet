@@ -25,3 +25,24 @@ exports.history = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.withdraw = async (req, res, next) => {
+  try {
+    const { currency_code, amount, reference, memo } = req.body;
+    if (!currency_code || !amount || amount <= 0) {
+      return res.status(400).json({ error: 'currency_code and positive amount required' });
+    }
+
+    const transaction = await userWalletService.debit({
+      userId: req.user.userId,
+      currencyCode: currency_code,
+      amount,
+      reference: reference || 'user_withdraw',
+      memo: memo || null
+    });
+
+    res.json({ transaction });
+  } catch (err) {
+    next(err);
+  }
+};

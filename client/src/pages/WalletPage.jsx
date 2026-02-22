@@ -11,6 +11,11 @@ const TYPE_CONFIG = {
   bonus:        { label: 'Bonus',    sign: '+', color: 'var(--success)' },
 }
 
+const CURRENCY_ICON = {
+  gem:  '💎',
+  star: '⭐',
+}
+
 export default function WalletPage() {
   const navigate = useNavigate()
   const [balances, setBalances] = useState([])
@@ -73,9 +78,8 @@ export default function WalletPage() {
       <div className="stats-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
         {balances.map(b => (
           <div className="stat-card" key={b.currency_id}>
-            <div className="stat-label">{b.name}</div>
+            <div className="stat-label">{CURRENCY_ICON[b.code] ? `${CURRENCY_ICON[b.code]} ${b.name}` : b.name}</div>
             <div className="stat-value">{Number(b.balance).toLocaleString()}</div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: 4 }}>{b.code}</div>
           </div>
         ))}
       </div>
@@ -91,7 +95,7 @@ export default function WalletPage() {
           >
             <option value="">All Currencies</option>
             {balances.map(b => (
-              <option key={b.code} value={b.code}>{b.name}</option>
+              <option key={b.code} value={b.code}>{CURRENCY_ICON[b.code] || ''} {b.name}</option>
             ))}
           </select>
         </div>
@@ -126,7 +130,7 @@ export default function WalletPage() {
                             {cfg.label}
                           </span>
                         </td>
-                        <td style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{tx.currency_code}</td>
+                        <td style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{CURRENCY_ICON[tx.currency_code] || ''} {tx.currency_name || tx.currency_code}</td>
                         <td style={{ textAlign: 'right', fontWeight: 600, color: cfg.color }}>
                           {cfg.sign}{Number(tx.amount).toLocaleString()}
                         </td>

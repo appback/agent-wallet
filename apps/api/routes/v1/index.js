@@ -27,6 +27,7 @@ router.delete('/account/links/:service', jwtAuth, accountController.unlink);
 // User wallet (user-authenticated)
 router.get('/user/wallet/balances', jwtAuth, userWalletController.balances);
 router.get('/user/wallet/history', jwtAuth, userWalletController.history);
+router.post('/user/wallet/withdraw', jwtAuth, userWalletController.withdraw);
 
 // Public
 router.post('/agents/register', agentsController.register);
